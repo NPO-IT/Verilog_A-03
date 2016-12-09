@@ -1,3 +1,26 @@
+/TheFFM.v.bak
+/lcbCombiner.v.bak
+/lcbFull.v.bak
+/Astra.asm.rpt
+/Astra.done
+/Astra.eda.rpt
+/Astra.fit.rpt
+/Astra.flow.rpt
+/Astra.map.rpt
+/Astra.map.smsg
+/Astra.tan.rpt
+/Astra_nativelink_simulation.rpt
+/serv_req_info.txt
+*.qws
+*.v.bak
+**/db/*
+**/incremental_db/*
+**/simulation/*
+**/greybox_tmp/*
+*.kpt
+*.ddb
+
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
