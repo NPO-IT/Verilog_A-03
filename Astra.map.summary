@@ -1,9 +1,9 @@
-Analysis & Synthesis Status : Successful - Fri Dec 09 14:50:39 2016
+Analysis & Synthesis Status : Successful - Mon Dec 12 11:00:00 2016
 Quartus II Version : 9.0 Build 184 04/29/2009 SP 1 SJ Web Edition
 Revision Name : Astra
 Top-level Entity Name : Astra
 Family : FLEX10KE
-Total logic elements : 0
-Total pins : 23
+Total logic elements : 148
+Total pins : 27
 Total memory bits : 0
 Total PLLs : 0

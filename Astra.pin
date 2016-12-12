@@ -36,7 +36,7 @@
  ------------------------------------------------------------------------------
 
 
-File Generation Date & Time: Fri Dec 09 14:31:03 2016
+File Generation Date & Time: Mon Dec 12 11:00:04 2016
 Quartus II Version 9.0 Build 184 04/29/2009 Service Pack 1 SJ Web Edition
 CHIP  "Astra"  ASSIGNED TO AN: EPF10K200SRC240-3
 
@@ -82,7 +82,7 @@ VCC_IO                       : 37        : power  :                   : 3.3V    
 GND*                         : 38        :        :                   :         :           :                
 GND*                         : 39        :        :                   :         :           :                
 VCC_INT                      : 40        : power  :                   : 2.5V    :           :                
-GND*                         : 41        :        :                   :         :           :                
+UART0_TX                     : 41        : output : LVTTL/LVCMOS      :         :           : N              
 GND_INT                      : 42        : gnd    :                   :         :           :                
 GND*                         : 43        :        :                   :         :           :                
 GND*                         : 44        :        :                   :         :           :                
@@ -112,7 +112,7 @@ GND*                         : 67        :        :                   :         
 GND*                         : 68        :        :                   :         :           :                
 GND_INT                      : 69        : gnd    :                   :         :           :                
 GND*                         : 70        :        :                   :         :           :                
-GND*                         : 71        :        :                   :         :           :                
+SKUT_VI                      : 71        : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 72        :        :                   :         :           :                
 GND*                         : 73        :        :                   :         :           :                
 GND*                         : 74        :        :                   :         :           :                
@@ -142,7 +142,7 @@ GND*                         : 97        :        :                   :         
 GND*                         : 98        :        :                   :         :           :                
 GND*                         : 99        :        :                   :         :           :                
 GND*                         : 100       :        :                   :         :           :                
-GND*                         : 101       :        :                   :         :           :                
+SKUT_MBR                     : 101       : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 102       :        :                   :         :           :                
 GND*                         : 103       :        :                   :         :           :                
 GND_INT                      : 104       : gnd    :                   :         :           :                
@@ -174,7 +174,7 @@ GND*                         : 129       :        :                   :         
 VCC_INT                      : 130       : power  :                   : 2.5V    :           :                
 GND*                         : 131       :        :                   :         :           :                
 GND*                         : 132       :        :                   :         :           :                
-GND*                         : 133       :        :                   :         :           :                
+UART0_dTX                    : 133       : output : LVTTL/LVCMOS      :         :           : N              
 GND*                         : 134       :        :                   :         :           :                
 GND_INT                      : 135       : gnd    :                   :         :           :                
 GND*                         : 136       :        :                   :         :           :                
@@ -209,7 +209,7 @@ GND*                         : 164       :        :                   :         
 GND_INT                      : 165       : gnd    :                   :         :           :                
 GND*                         : 166       :        :                   :         :           :                
 GND*                         : 167       :        :                   :         :           :                
-GND*                         : 168       :        :                   :         :           :                
+UART0_dRX                    : 168       : output : LVTTL/LVCMOS      :         :           : N              
 GND*                         : 169       :        :                   :         :           :                
 VCC_INT                      : 170       : power  :                   : 2.5V    :           :                
 GND*                         : 171       :        :                   :         :           :                
@@ -233,16 +233,16 @@ GND*                         : 188       :        :                   :         
 VCC_IO                       : 189       : power  :                   : 3.3V    :           :                
 GND*                         : 190       :        :                   :         :           :                
 GND*                         : 191       :        :                   :         :           :                
-GND*                         : 192       :        :                   :         :           :                
-GND*                         : 193       :        :                   :         :           :                
-GND*                         : 194       :        :                   :         :           :                
-GND*                         : 195       :        :                   :         :           :                
-GND*                         : 196       :        :                   :         :           :                
+DAC1_DB1                     : 192       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC1_DB0                     : 193       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC1_DB2                     : 194       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC1_DB4                     : 195       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC1_DB3                     : 196       : output : LVTTL/LVCMOS      :         :           : Y              
 GND_INT                      : 197       : gnd    :                   :         :           :                
-GND*                         : 198       :        :                   :         :           :                
-GND*                         : 199       :        :                   :         :           :                
+DAC1_DB6                     : 198       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC1_DB5                     : 199       : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 200       :        :                   :         :           :                
-GND*                         : 201       :        :                   :         :           :                
+DAC1_DB7                     : 201       : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 202       :        :                   :         :           :                
 GND*                         : 203       :        :                   :         :           :                
 GND*                         : 204       :        :                   :         :           :                
@@ -251,7 +251,7 @@ GND*                         : 206       :        :                   :         
 GND*                         : 207       :        :                   :         :           :                
 GND*                         : 208       :        :                   :         :           :                
 GND*                         : 209       :        :                   :         :           :                
-GND+                         : 210       :        :                   :         :           :                
+UART0_RX                     : 210       : input  : LVTTL/LVCMOS      :         :           : N              
 clk80                        : 211       : input  : LVTTL/LVCMOS      :         :           : Y              
 GND+                         : 212       :        :                   :         :           :                
 GND*                         : 213       :        :                   :         :           :                
@@ -261,24 +261,24 @@ GND_INT                      : 216       : gnd    :                   :         
 GND*                         : 217       :        :                   :         :           :                
 GND*                         : 218       :        :                   :         :           :                
 GND*                         : 219       :        :                   :         :           :                
-GND*                         : 220       :        :                   :         :           :                
-GND*                         : 221       :        :                   :         :           :                
+DAC_MODE                     : 220       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC1_CLK                     : 221       : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 222       :        :                   :         :           :                
 GND*                         : 223       :        :                   :         :           :                
 VCC_IO                       : 224       : power  :                   : 3.3V    :           :                
 VCC_INT                      : 225       : power  :                   : 2.5V    :           :                
 GND*                         : 226       :        :                   :         :           :                
 GND*                         : 227       :        :                   :         :           :                
-GND*                         : 228       :        :                   :         :           :                
+DAC2_DB0                     : 228       : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 229       :        :                   :         :           :                
-GND*                         : 230       :        :                   :         :           :                
-GND*                         : 231       :        :                   :         :           :                
+DAC2_DB1                     : 230       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC2_DB3                     : 231       : output : LVTTL/LVCMOS      :         :           : Y              
 GND_INT                      : 232       : gnd    :                   :         :           :                
-GND*                         : 233       :        :                   :         :           :                
-GND*                         : 234       :        :                   :         :           :                
-GND*                         : 235       :        :                   :         :           :                
-GND*                         : 236       :        :                   :         :           :                
-GND*                         : 237       :        :                   :         :           :                
+DAC2_DB2                     : 233       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC2_DB5                     : 234       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC2_DB4                     : 235       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC2_DB7                     : 236       : output : LVTTL/LVCMOS      :         :           : Y              
+DAC2_DB6                     : 237       : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 238       :        :                   :         :           :                
 GND*                         : 239       :        :                   :         :           :                
-GND*                         : 240       :        :                   :         :           :                
+DAC2_CLK                     : 240       : output : LVTTL/LVCMOS      :         :           : Y              

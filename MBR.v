@@ -6,10 +6,7 @@ module MBR
 	output reg oMBR,
 	output reg skut40
 );
-`define SWITCH 0
-`define CALC 1
 
-reg state;
 reg tmp;
 reg cnt;
 reg [6:0]count; 
@@ -17,7 +14,6 @@ reg [6:0]count;
 always@(posedge clk)
 begin
 if (~rst) begin
-	state <= 0;
 	tmp <= 0;
 	count <= 0;
 end else begin

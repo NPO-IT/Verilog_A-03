@@ -18,13 +18,17 @@ module Astra (
 
 wire reset;
 wire clk640k, clk320k, clk8k;
+wire skut_sync;
 
 // Common reset and dividers
 globalReset aClr ( .clk(clk80), .rst(reset) );
 defparam 	aClr.clockFreq 	=	32'd10;			//32'd80640000;
 defparam 	aClr.delayInSec	=	1;
 
-clkDividers clkDivs( .reset(reset), .clk80(clk80), .clk640k(clk640k), .clk320k(clk320k), .clk8k(clk8k) );
+clkDividers clkDivs ( .reset(reset), .clk80(clk80), .clk640k(clk640k), .clk320k(clk320k), .clk8k(clk8k) );
+
+VI skut_vi ( .clk(clk80), .i320(clk320k), .rst(reset), .oVI(SKUT_VI) );
+MBR skut_mbr ( .clk(clk80), .i320(clk320k), .rst(reset), .oMBR(SKUT_MBR), .skut40(skut_sync) );
 
 
 

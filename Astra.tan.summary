@@ -1,0 +1,36 @@
+--------------------------------------------------------------------------------------
+Timing Analyzer Summary
+--------------------------------------------------------------------------------------
+
+Type           : Worst-case tco
+Slack          : N/A
+Required Time  : None
+Actual Time    : 12.100 ns
+From           : VI:skut_vi|oVI
+To             : SKUT_VI
+From Clock     : clk80
+To Clock       : --
+Failed Paths   : 0
+
+Type           : Clock Setup: 'clk80'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 38.17 MHz ( period = 26.200 ns )
+From           : globalReset:aClr|lpm_counter:count_rtl_0|alt_counter_f10ke:wysi_counter|counter_cell[0]
+To             : globalReset:aClr|lpm_counter:count_rtl_0|alt_counter_f10ke:wysi_counter|counter_cell[63]
+From Clock     : clk80
+To Clock       : clk80
+Failed Paths   : 0
+
+Type           : Total number of failed paths
+Slack          : 
+Required Time  : 
+Actual Time    : 
+From           : 
+To             : 
+From Clock     : 
+To Clock       : 
+Failed Paths   : 0
+
+--------------------------------------------------------------------------------------
+
