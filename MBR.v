@@ -16,6 +16,8 @@ begin
 if (~rst) begin
 	tmp <= 0;
 	count <= 0;
+	oMBR <= 0;
+	skut40 <= 0;
 end else begin
 	if (tmp != i320) cnt <= 1;
 	tmp <= i320;

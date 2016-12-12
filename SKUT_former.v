@@ -16,12 +16,6 @@ module SKUT_former
 	output reg oTest	
 );
 
-`define WAIT 0
-`define MEGAWAIT 1
-`define RX 2
-`define SET 3
-`define BDDCRQ 4
-
 parameter [7:0]SKUT_Middle = 8'd124;
 parameter [7:0]SIN_LOW = 8'd28;
 parameter [7:0]SIN_MLOW = 8'd92;
@@ -64,24 +58,25 @@ end
 always@(posedge iClk) begin
 if (~reset) begin
 	DDCBState <= 2'b0;
+	oDDCBReq <= 1'b0;
 	DDCBCntRQ <= 9'b0;
 end else begin
 case (DDCBState)
-	`WAIT: begin
-		if (S100H[1]) DDCBState <= `RX;
+	0: begin
+		if (S100H[1]) DDCBState <= 2;
 	end
-	`MEGAWAIT: begin
+	1: begin
 		DDCBCntRQ <= 0;
-		if (~S100H[1]) DDCBState <= `WAIT;
+		if (~S100H[1]) DDCBState <= 0;
 	end
-	`RX: begin
+	2: begin
 		DDCBCntRQ <= DDCBCntRQ + 1'b1;	
 		//DDCBState <= `MEGAWAIT;
 		//if (DDCBCntRQ == 80) begin DDCBCntRQ <= 0; oDDCBReq <= 1; end else oDDCBReq <= 0;
 		
 		case (DDCBCntRQ)
 			509: oDDCBReq <= 0;
-			510: DDCBState <= `MEGAWAIT;
+			510: DDCBState <= 1;
 			default: oDDCBReq <= 1;
 		endcase
 	end
@@ -92,6 +87,12 @@ end
 /*Îעהאקא םא ÂÛÕÎÄ*/
 always@(posedge iClk)begin
 if (~reset) begin
+	oData <= 8'b0;
+	oAddr <= 7'b0;
+	oWrEn <= 1'b0;
+	o19ch <= 1'b0;
+	oDDCAddr <= 7'b0;
+	oTest <= 1'b0;
 	SKUTState <= 3'b0;
 	SKUTOutByte <= 4'b0;
 	SKUTCntChan <= 7'b0;
@@ -102,27 +103,27 @@ if (~reset) begin
 	LKF1Address <= 1'b1;
 end else begin
 case (SKUTState)
-	`WAIT: begin
+	0: begin
 		if (S8K[1] == 1) begin
-			SKUTState <= `RX;
+			SKUTState <= 2;
 			if (SKUTCntLKF == 640) SKUTCntLKF <= 0;		//lkf 12,5Hz
 		end
 	end
-	`MEGAWAIT: begin
+	1: begin
 		if (DDCAddress == 80) DDCAddress <= 0;
 		cntRQ <= 0;
 		if (S8K[1] == 0) begin 
-			SKUTState <= `WAIT;
+			SKUTState <= 0;
 			SKUTOutByte <= 0;
 			SKUTCntChan <= 0;
 			SKUTCntLKF <= SKUTCntLKF + 1'b1;
 			SKUTCntSin <= SKUTCntSin + 1'b1;
 		end
 	end
-	`RX: begin
+	2: begin
 		SKUTOutByte <= SKUTOutByte + 1'b1;
 		case (SKUTOutByte)
-			0: SKUTState <= `SET;
+			0: SKUTState <= 3;
 			1,2,3,4,5,6,7,8: oWrEn <= 1;
 			9,10,11,12,13: oWrEn <= 0;
 			14: begin 
@@ -134,10 +135,10 @@ case (SKUTState)
 			SKUTOutByte <= 0;
 		end
 		if (SKUTCntChan == 80) begin
-			SKUTState <= `BDDCRQ;
-		end;
+			SKUTState <= 4;
+		end
 	end
-	`SET: begin
+	3: begin
 	oTest <= 1;
 		case (SKUTCntChan) 
 			38,39,78,79: oData <= SKUT_Middle;
@@ -151,8 +152,8 @@ case (SKUTState)
 					o19ch <= 1'b0;
 				end
 			end
-/* ÁÓÑ צטפנא */			
-			13: oData <= {iDDCS1[13:12], 6'b011100};
+// ÁÓÑ צטפנא 			
+/*			13: oData <= {iDDCS1[13:12], 6'b011100};
 			33:	oData <= {iDDCS1[15:14], 6'b011100};
 			3:	oData <= {iDDCS1[9:8], 6'b011100};
 			23:	oData <= {iDDCS1[11:10], 6'b011100};
@@ -168,10 +169,10 @@ case (SKUTState)
 			21: oData <= {iDDCS2[7:6], 6'b011100};
 			14: oData <= {iDDCS2[1:0], 6'b011100};
 			34: oData <= {iDDCS2[3:2], 6'b011100};
-/*ÁÓÑ אםאכמדמגûי*/
+//ÁÓÑ אםאכמדמגûי
 			4:	oData <= {iLKF1[3:2], 6'b011100};
 			24: oData <= {iLKF1[1:0], 6'b011100};
-			
+*/			
 			default: oData <= 8'd0;
 		endcase
 
@@ -179,10 +180,10 @@ case (SKUTState)
 		else oAddr <= (((SKUTCntChan - 6'd40) << 1'b1) + 1'b1);
 		
 		
-		SKUTState <= `RX;
+		SKUTState <= 2;
 	end
 	
-	`BDDCRQ: begin
+	4: begin
 		case (cntRQ)
 			1: 	begin
 				oDDCAddr <= DDCAddress;
@@ -190,7 +191,7 @@ case (SKUTState)
 			3: begin
 				DDCAddress <= DDCAddress + 1'b1;
 			end
-			4: SKUTState <= `MEGAWAIT;
+			4: SKUTState <= 1;
 		endcase
 		cntRQ = cntRQ + 1'b1;
 	end

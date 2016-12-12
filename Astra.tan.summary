@@ -5,9 +5,9 @@ Timing Analyzer Summary
 Type           : Worst-case tco
 Slack          : N/A
 Required Time  : None
-Actual Time    : 12.100 ns
-From           : VI:skut_vi|oVI
-To             : SKUT_VI
+Actual Time    : 18.100 ns
+From           : toDAC:dac_distributor|SEL
+To             : DAC2_DB6
 From Clock     : clk80
 To Clock       : --
 Failed Paths   : 0

@@ -88,3 +88,4 @@ set_global_assignment -name EDA_DESIGN_INSTANCE_NAME Astra_tb -section_id Astra_
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME Astra_tb -section_id Astra_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE Astra_tb.v -section_id Astra_tb
 set_global_assignment -name EDA_NATIVELINK_SIMULATION_SETUP_SCRIPT simulation/modelsim/wave.do -section_id eda_simulation
+set_global_assignment -name QIP_FILE SKUT_buffer.qip

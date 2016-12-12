@@ -4,43 +4,38 @@ module toDAC
 	input clk,
 	input i640,
 	input skut40,
-	output reg [6:0]ADR,	
-//	output reg RDN,
+	output reg [6:0]ADR,
 	output reg SEL,
 	output reg test
 );
-`define WAITNEG 0
-`define ACT 1
-`define WAITPOS 2
-`define COUNT 3
 
 reg [2:0]state;
-reg aim;
 
 always@(posedge clk) begin
 if (~reset) begin
 	state <= 0;
 	ADR <= 0;
+	SEL <= 0;
 end else
 case (state)
-	`WAITNEG: begin
-		if (~i640) state <= `ACT;
+	0: begin
+		if (~i640) state <= 1;
 		test <= 0;
 	end
-	`ACT: begin
+	1: begin
 		ADR <= ADR + 1'b1;
-		if (skut40 == 1'b1) begin test <= 1'b1; ADR <= 80; end		
-		state <= `WAITPOS;
+		if (skut40 == 1'b1) begin ADR <= 0; end		
+		state <= 2;
 	end
-	`WAITPOS: begin
+	2: begin
 		if (i640) begin 
-			state <= `COUNT;
+			state <= 3;
 		end
 	end
-	`COUNT: begin
-		if (ADR == 80) begin ADR <= 0; SEL <= ~SEL; end
+	3: begin
+		if (ADR == 0) begin SEL <= ~SEL; end
 		test <= 0;
-		state <= `WAITNEG;
+		state <= 0;
 	end
 endcase
 end
