@@ -89,3 +89,9 @@ set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME Astra_tb -section_id Astr
 set_global_assignment -name EDA_TEST_BENCH_FILE Astra_tb.v -section_id Astra_tb
 set_global_assignment -name EDA_NATIVELINK_SIMULATION_SETUP_SCRIPT simulation/modelsim/wave.do -section_id eda_simulation
 set_global_assignment -name QIP_FILE SKUT_buffer.qip
+set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name FLEX10K_CONFIGURATION_DEVICE EPC4
+set_global_assignment -name AUTO_INCREMENT_CONFIG_DEVICE_JTAG_USER_CODE OFF
+set_global_assignment -name FLEX10K_ENABLE_LOW_VOLTAGE_MODE_ON_CONFIG_DEVICE OFF
+set_global_assignment -name ON_CHIP_BITSTREAM_DECOMPRESSION OFF
+set_global_assignment -name CONFIGURATION_CLOCK_DIVISOR 1.0

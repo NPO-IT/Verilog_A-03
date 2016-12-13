@@ -15,36 +15,24 @@ module Astra (
 	output	UART0_dTX,
 	output	UART0_dRX
 );
-
-wire reset;
-wire clk640k, clk320k, clk320s, clk8k;
-wire skut_sync;
-
-// Common reset and dividers
-globalReset aClr ( .clk(clk80), .rst(reset) );
-defparam 	aClr.clockFreq 	=	32'd10;			//32'd80640000;
-defparam 	aClr.delayInSec	=	1;
-																										//add 100hz
-clkDividers clkDivs ( .reset(reset), .clk80(clk80), .clk640k(clk640k), .clk320k(clk320k), .clk320s(clk320s), .clk8k(clk8k) );
-
-VI skut_vi ( .clk(clk80), .i320(clk320s), .rst(reset), .oVI(SKUT_VI) );
-MBR skut_mbr ( .clk(clk80), .i320(clk320s), .rst(reset), .oMBR(SKUT_MBR), .skut40(skut_sync) );
-
+//Common
+wire			reset;
+wire			clk640k, clk320k, clk320s, clk8k;
+wire			skut_sync;
+//SKUT former and buffer
 wire	[7:0]	BUF_IDATA;
 wire	[6:0]	BUF_IADDR;
 wire			BUF_IWREN;
 reg				BUF0_WREN, BUF1_WREN;
-
 wire	[6:0]	BUF_OADDR;
 wire			BUF_OSWCH;
 reg				BUF0_RDEN, BUF1_RDEN;
 wire	[7:0]	BUF0_DATA, BUF1_DATA;
 reg		[7:0]	DAC_OUT;
-
+// DAC outputs
 assign DAC_MODE = 0;
-assign DAC1_CLK = ~clk320k;
-assign DAC2_CLK = clk320k;
-
+assign DAC1_CLK = clk320k;
+assign DAC2_CLK = ~clk320k;
 assign DAC1_DB0 = DAC_OUT[0];
 assign DAC2_DB0 = DAC_OUT[0];
 assign DAC1_DB1 = DAC_OUT[1];
@@ -61,6 +49,14 @@ assign DAC1_DB6 = DAC_OUT[6];
 assign DAC2_DB6 = DAC_OUT[6];
 assign DAC1_DB7 = DAC_OUT[7];
 assign DAC2_DB7 = DAC_OUT[7];
+
+// Common reset and dividers
+globalReset aClr ( .clk(clk80), .rst(reset) );
+defparam 	aClr.clockFreq 	=	32'd10;			//32'd80640000;
+defparam 	aClr.delayInSec	=	1;
+clkDividers clkDivs ( .reset(reset), .clk80(clk80), .clk640k(clk640k), .clk320k(clk320k), .clk320s(clk320s), .clk8k(clk8k) );
+VI skut_vi ( .clk(clk80), .i320(clk320s), .rst(reset), .oVI(SKUT_VI) );
+MBR skut_mbr ( .clk(clk80), .i320(clk320s), .rst(reset), .oMBR(SKUT_MBR), .skut40(skut_sync) );
 
 always@(*)begin
 	case(BUF_OSWCH)
@@ -95,9 +91,7 @@ SKUT_former skut_frame( .reset(reset), .iClk(clk80), .i8KHz(clk8k),
 
 toDAC dac_distributor( .reset(reset), .clk(clk80), .i640(clk640k), .skut40(skut_sync), .ADR(BUF_OADDR), .SEL(BUF_OSWCH) );
 
-SKUT_buffer skut_buf0 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF0_RDEN), .wraddress(BUF_IADDR), .wren(BUF0_WREN),
-	.q(BUF0_DATA));
-SKUT_buffer skut_buf1 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF1_RDEN), .wraddress(BUF_IADDR), .wren(BUF1_WREN),
-	.q(BUF1_DATA));
+SKUT_buffer skut_buf0 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF0_RDEN), .wraddress(BUF_IADDR), .wren(BUF0_WREN), .q(BUF0_DATA));
+SKUT_buffer skut_buf1 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF1_RDEN), .wraddress(BUF_IADDR), .wren(BUF1_WREN), .q(BUF1_DATA));
 
 endmodule
