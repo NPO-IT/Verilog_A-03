@@ -95,3 +95,7 @@ set_global_assignment -name AUTO_INCREMENT_CONFIG_DEVICE_JTAG_USER_CODE OFF
 set_global_assignment -name FLEX10K_ENABLE_LOW_VOLTAGE_MODE_ON_CONFIG_DEVICE OFF
 set_global_assignment -name ON_CHIP_BITSTREAM_DECOMPRESSION OFF
 set_global_assignment -name CONFIGURATION_CLOCK_DIVISOR 1.0
+set_global_assignment -name HEX_FILE LCCrq.hex
+set_global_assignment -name QIP_FILE LCCrq.qip
+set_global_assignment -name VERILOG_FILE UARTTXBIG.v
+set_global_assignment -name VERILOG_FILE UARTRX.v

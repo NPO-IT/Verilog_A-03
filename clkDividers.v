@@ -1,16 +1,35 @@
 module clkDividers(
 	input	reset,			// aclr
 	input	clk80,			// 80.640.000	---
+	input	clk100, 		// ~100.660.000	---
+	output	reg	clk4_8m,	// ~4.790.000	50%
 	output	reg	clk640k,	// 640.000		50%
 	output	reg	clk320k,	// 320.000		50%
 	output	reg	clk320s,	// 320.000		50%
 	output	reg	clk8k		// 8.000		50%
 );
 
+reg	[4:0]	cnt4_8;			// 21
 reg	[6:0]	cnt640;			// 126
 reg	[7:0]	cnt320;			// 252
 reg	[8:0]	cnt320s;		// 252
 reg	[14:0]	cnt8;			// 10080
+
+always@(posedge clk100 or negedge reset) begin
+	if (~reset) begin
+		cnt4_8 <= 5'b0;
+		clk4_8m <= 1'b0;
+	end else begin
+		cnt4_8 <= cnt4_8 + 1'b1;
+		if (cnt4_8 > 9) begin
+			clk4_8m <= 1'b1;
+		end
+		if (cnt4_8 == 20) begin
+			cnt4_8 <= 5'b0;
+			clk4_8m <= 1'b0;
+		end
+	end
+end
 
 always@(posedge clk80 or negedge reset) begin
 	if(~reset)begin

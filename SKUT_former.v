@@ -1,42 +1,42 @@
 module SKUT_former
 (
-	input reset,
-	input iClk,
-	input i8KHz,
-	input i100Hz,
-	input [15:0] iDDCS1,
-	input [15:0] iDDCS2,
-	input [3:0] iLKF1,
-	output reg [7:0] oData,
-	output reg [6:0] oAddr,
-	output reg oWrEn,
-	output reg o19ch,
-	output reg oDDCBReq,
-	output reg [6:0] oDDCAddr,
-	output reg oTest	
+	input				reset,
+	input				iClk,
+	input				i8KHz,
+	input				i100Hz,
+	input		[15:0]	iDDCS1,
+	input		[15:0]	iDDCS2,
+	input		[3:0]	iLKF1,
+	output	reg	[7:0]	oData,
+	output	reg	[6:0]	oAddr,
+	output	reg 		oWrEn,
+	output	reg 		o19ch,
+	output	reg 		oDDCBReq,
+	output	reg [6:0]	oDDCAddr,
+	output	reg	[7:0]	oLCCnumber,
+	output	reg 		oLCCrq
 );
 
-parameter [7:0]SKUT_Middle = 8'd124;
-parameter [7:0]SIN_LOW = 8'd28;
-parameter [7:0]SIN_MLOW = 8'd92;
-parameter [7:0]SIN_MHI = 8'd156;
-parameter [7:0]SIN_HIGH = 8'd220;
+parameter	[7:0]	SKUT_Middle = 8'd124;
+parameter	[7:0]	SIN_LOW = 8'd28;
+parameter	[7:0]	SIN_MLOW = 8'd92;
+parameter	[7:0]	SIN_MHI = 8'd156;
+parameter	[7:0]	SIN_HIGH = 8'd220;
 
-reg [1:0]S8K;
-reg [2:0]SKUTState;
-reg [3:0]SKUTOutByte;
-reg [6:0]SKUTCntChan;
-reg [2:0]SKUTCntSin;
-reg [9:0]SKUTCntLKF;
-reg [7:0]SKUT_Sinus[0:7];
+reg		[1:0]	S8K;
+reg		[2:0]	SKUTState;
+reg		[3:0]	SKUTOutByte;
+reg		[6:0]	SKUTCntChan;
+reg		[2:0]	SKUTCntSin;
+reg		[9:0]	SKUTCntLKF;
+reg		[7:0]	SKUT_Sinus[0:7];
 
-
-reg [3:0]cntRQ;
-reg [1:0]S100H;
-reg [1:0]DDCBState;
-reg [9:0]DDCBCntRQ;
-reg [6:0]DDCAddress;
-reg [5:0]LKF1Address;
+reg		[3:0]	cntRQ;
+reg		[1:0]	S100H;
+reg		[1:0]	DDCBState;
+reg		[9:0]	DDCBCntRQ;
+reg		[6:0]	DDCAddress;
+reg		[5:0]	LKF1Address;
 
 initial begin
 SKUT_Sinus[0] = SIN_LOW;
@@ -52,6 +52,37 @@ end
 always@(posedge iClk) begin
 	S8K <= { S8K[0],  i8KHz };
 	S100H <= { S100H[0],  i100Hz };
+end
+
+reg		[1:0]	LCCstate;
+
+always@(posedge iClk) begin
+	if(~reset) begin
+		oLCCnumber <= 8'b0;
+		LCCstate <= 2'b0;
+		oLCCrq <= 1'b0;
+	end else begin
+		case(LCCstate)
+			0: begin
+				if(S8K[1] == 1) begin
+					LCCstate <= 2'd1;
+					oLCCrq <= 1'b1;
+				end
+			end
+			1: begin
+				if(S8K[1] == 0) begin
+					LCCstate <= 2'd2;
+					oLCCrq <= 1'b0;
+				end
+			end
+			2: begin
+				oLCCnumber <= oLCCnumber + 1'b1;
+				LCCstate <= 2'd0;
+				if (oLCCnumber == 8'd159)
+					oLCCnumber <= 8'd0;
+			end
+		endcase
+	end
 end
 
 /*Запрос на БУС*/
@@ -71,9 +102,6 @@ case (DDCBState)
 	end
 	2: begin
 		DDCBCntRQ <= DDCBCntRQ + 1'b1;	
-		//DDCBState <= `MEGAWAIT;
-		//if (DDCBCntRQ == 80) begin DDCBCntRQ <= 0; oDDCBReq <= 1; end else oDDCBReq <= 0;
-		
 		case (DDCBCntRQ)
 			509: oDDCBReq <= 0;
 			510: DDCBState <= 1;
@@ -92,7 +120,6 @@ if (~reset) begin
 	oWrEn <= 1'b0;
 	o19ch <= 1'b0;
 	oDDCAddr <= 7'b0;
-	oTest <= 1'b0;
 	SKUTState <= 3'b0;
 	SKUTOutByte <= 4'b0;
 	SKUTCntChan <= 7'b0;
@@ -128,7 +155,6 @@ case (SKUTState)
 			9,10,11,12,13: oWrEn <= 0;
 			14: begin 
 				SKUTCntChan <= SKUTCntChan + 1'b1; 
-				oTest <= 0; 
 			end
 		endcase
 		if (SKUTOutByte == 15) begin
@@ -139,7 +165,6 @@ case (SKUTState)
 		end
 	end
 	3: begin
-	oTest <= 1;
 		case (SKUTCntChan) 
 			38,39,78,79: oData <= SKUT_Middle;
 			29,69: oData <= SKUT_Sinus[SKUTCntSin]; 

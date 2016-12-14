@@ -5,9 +5,9 @@ Timing Analyzer Summary
 Type           : Worst-case tco
 Slack          : N/A
 Required Time  : None
-Actual Time    : 18.100 ns
-From           : toDAC:dac_distributor|SEL
-To             : DAC2_DB6
+Actual Time    : 20.000 ns
+From           : SKUT_buffer:skut_buf0|altdpram:altdpram_component|q[1]
+To             : DAC2_DB1
 From Clock     : clk80
 To Clock       : --
 Failed Paths   : 0
@@ -20,6 +20,16 @@ From           : globalReset:aClr|lpm_counter:count_rtl_0|alt_counter_f10ke:wysi
 To             : globalReset:aClr|lpm_counter:count_rtl_0|alt_counter_f10ke:wysi_counter|counter_cell[63]
 From Clock     : clk80
 To Clock       : clk80
+Failed Paths   : 0
+
+Type           : Clock Setup: 'clk100'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 82.64 MHz ( period = 12.100 ns )
+From           : UARTTXBIG:lcc_rq_uart|serialize[1]
+To             : UARTTXBIG:lcc_rq_uart|tx
+From Clock     : clk100
+To Clock       : clk100
 Failed Paths   : 0
 
 Type           : Total number of failed paths
