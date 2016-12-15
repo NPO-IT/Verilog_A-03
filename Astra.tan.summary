@@ -5,9 +5,9 @@ Timing Analyzer Summary
 Type           : Worst-case tco
 Slack          : N/A
 Required Time  : None
-Actual Time    : 20.000 ns
-From           : SKUT_buffer:skut_buf0|altdpram:altdpram_component|q[1]
-To             : DAC2_DB1
+Actual Time    : 22.800 ns
+From           : SKUT_buffer:skut_buf0|altdpram:altdpram_component|q[7]
+To             : DAC2_DB7
 From Clock     : clk80
 To Clock       : --
 Failed Paths   : 0
@@ -25,7 +25,7 @@ Failed Paths   : 0
 Type           : Clock Setup: 'clk100'
 Slack          : N/A
 Required Time  : None
-Actual Time    : 82.64 MHz ( period = 12.100 ns )
+Actual Time    : 81.30 MHz ( period = 12.300 ns )
 From           : UARTTXBIG:lcc_rq_uart|serialize[1]
 To             : UARTTXBIG:lcc_rq_uart|tx
 From Clock     : clk100

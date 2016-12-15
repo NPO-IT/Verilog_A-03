@@ -101,7 +101,7 @@ initial begin
 	answer[10]=50;
 	answer[11]=55;
 	answer[12]=60;
-	answer[13]=1005;
+	answer[13]=201;
 	answer[14]=956;
 end
 
@@ -167,8 +167,8 @@ initial begin
 					@(posedge clk5)
 					UART0_RX = fastCntr[cntFast][cntBit];
 					cntBit = cntBit + 1;
-					cntFast = cntFast + 1;
 				end
+				cntFast = cntFast + 1;
 			end else begin
 				repeat (8)					// 8 bit
 				begin

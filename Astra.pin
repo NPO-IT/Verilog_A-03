@@ -36,7 +36,7 @@
  ------------------------------------------------------------------------------
 
 
-File Generation Date & Time: Wed Dec 14 15:40:31 2016
+File Generation Date & Time: Thu Dec 15 13:26:51 2016
 Quartus II Version 9.0 Build 184 04/29/2009 Service Pack 1 SJ Web Edition
 CHIP  "Astra"  ASSIGNED TO AN: EPF10K200SRC240-3
 
@@ -79,7 +79,7 @@ GND*                         : 34        :        :                   :         
 GND*                         : 35        :        :                   :         :           :                
 GND*                         : 36        :        :                   :         :           :                
 VCC_IO                       : 37        : power  :                   : 3.3V    :           :                
-UART0_dTX                    : 38        : output : LVTTL/LVCMOS      :         :           : N              
+GND*                         : 38        :        :                   :         :           :                
 GND*                         : 39        :        :                   :         :           :                
 VCC_INT                      : 40        : power  :                   : 2.5V    :           :                
 GND*                         : 41        :        :                   :         :           :                
@@ -89,12 +89,12 @@ GND*                         : 44        :        :                   :         
 GND*                         : 45        :        :                   :         :           :                
 GND*                         : 46        :        :                   :         :           :                
 VCC_INT                      : 47        : power  :                   : 2.5V    :           :                
-GND*                         : 48        :        :                   :         :           :                
-GND*                         : 49        :        :                   :         :           :                
-GND*                         : 50        :        :                   :         :           :                
+UART0_TX                     : 48        : output : LVTTL/LVCMOS      :         :           : Y              
+UART0_dTX                    : 49        : output : LVTTL/LVCMOS      :         :           : Y              
+UART0_dRX                    : 50        : output : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 51        :        :                   :         :           :                
 GND_INT                      : 52        : gnd    :                   :         :           :                
-GND*                         : 53        :        :                   :         :           :                
+UART0_RX                     : 53        : input  : LVTTL/LVCMOS      :         :           : Y              
 GND*                         : 54        :        :                   :         :           :                
 GND*                         : 55        :        :                   :         :           :                
 GND*                         : 56        :        :                   :         :           :                
@@ -187,8 +187,8 @@ GND*                         : 142       :        :                   :         
 GND*                         : 143       :        :                   :         :           :                
 GND*                         : 144       :        :                   :         :           :                
 GND_INT                      : 145       : gnd    :                   :         :           :                
-UART0_TX                     : 146       : output : LVTTL/LVCMOS      :         :           : N              
-UART0_dRX                    : 147       : output : LVTTL/LVCMOS      :         :           : N              
+GND*                         : 146       :        :                   :         :           :                
+GND*                         : 147       :        :                   :         :           :                
 GND*                         : 148       :        :                   :         :           :                
 GND*                         : 149       :        :                   :         :           :                
 VCC_INT                      : 150       : power  :                   : 2.5V    :           :                
@@ -251,7 +251,7 @@ GND*                         : 206       :        :                   :         
 GND*                         : 207       :        :                   :         :           :                
 GND*                         : 208       :        :                   :         :           :                
 GND*                         : 209       :        :                   :         :           :                
-UART0_RX                     : 210       : input  : LVTTL/LVCMOS      :         :           : N              
+GND+                         : 210       :        :                   :         :           :                
 clk80                        : 211       : input  : LVTTL/LVCMOS      :         :           : Y              
 GND+                         : 212       :        :                   :         :           :                
 GND*                         : 213       :        :                   :         :           :                

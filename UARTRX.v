@@ -3,10 +3,13 @@
 	80MHz clk
 	double dff included
 	Ivan I. Ovchinnikov
-	2016.02.25
+	2016.12.15
 */
 
 module UARTRX
+#(
+	parameter unsigned DIVIDER = 16
+)
 	(
 		input clk, reset,
 		input RX,
@@ -48,10 +51,8 @@ module UARTRX
 			if (delay == 4'd9) begin delay <= 0; Valid <= 0; end else begin delay <= delay + 1'b1; end
 		end
 		
-
-		
 		if (rx_act) begin
-			if (stepcnt == 15) begin
+			if (stepcnt == (DIVIDER - 1)) begin
 				if (place == 8) begin
 					if (iRX) begin
 						Valid <= 1;
@@ -71,7 +72,7 @@ module UARTRX
 			end
 		end else begin
 			if ((~rx_act)&&(~iRX)) begin
-				if (strtcnt == 7) begin
+				if (strtcnt == ((DIVIDER/2) - 1)) begin
 					rx_act <= 1'b1;
 					strtcnt <= 0;
 				end else begin

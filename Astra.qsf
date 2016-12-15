@@ -99,3 +99,7 @@ set_global_assignment -name HEX_FILE LCCrq.hex
 set_global_assignment -name QIP_FILE LCCrq.qip
 set_global_assignment -name VERILOG_FILE UARTTXBIG.v
 set_global_assignment -name VERILOG_FILE UARTRX.v
+set_location_assignment PIN_53 -to UART0_RX
+set_location_assignment PIN_48 -to UART0_TX
+set_location_assignment PIN_50 -to UART0_dRX
+set_location_assignment PIN_49 -to UART0_dTX
