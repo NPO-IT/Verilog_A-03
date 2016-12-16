@@ -3,18 +3,14 @@ module SKUT_former
 	input				reset,
 	input				iClk,
 	input				i8KHz,
-	input				i100Hz,
-	input		[15:0]	iDDCS1,
-	input		[15:0]	iDDCS2,
-	input		[3:0]	iLKF1,
 	output	reg	[7:0]	oData,
 	output	reg	[6:0]	oAddr,
 	output	reg 		oWrEn,
 	output	reg 		o19ch,
-	output	reg 		oDDCBReq,
-	output	reg [6:0]	oDDCAddr,
 	output	reg	[7:0]	oLCCnumber,
-	output	reg 		oLCCrq
+	output	reg 		oLCCrq,
+	input		[5:0]	iLCC1_FDAT,
+	input				iLCC1_FVAL
 );
 
 parameter	[7:0]	SKUT_Middle = 8'd124;
@@ -39,19 +35,19 @@ reg		[6:0]	DDCAddress;
 reg		[5:0]	LKF1Address;
 
 initial begin
-SKUT_Sinus[0] = SIN_LOW;
-SKUT_Sinus[1] = SIN_MLOW;
-SKUT_Sinus[2] = SIN_MHI;
-SKUT_Sinus[3] = SIN_HIGH;
-SKUT_Sinus[4] = SIN_HIGH;
-SKUT_Sinus[5] = SIN_MHI;
-SKUT_Sinus[6] = SIN_MLOW;
-SKUT_Sinus[7] = SIN_LOW;
+	SKUT_Sinus[0] = SIN_LOW;
+	SKUT_Sinus[1] = SIN_MLOW;
+	SKUT_Sinus[2] = SIN_MHI;
+	SKUT_Sinus[3] = SIN_HIGH;
+	SKUT_Sinus[4] = SIN_HIGH;
+	SKUT_Sinus[5] = SIN_MHI;
+	SKUT_Sinus[6] = SIN_MLOW;
+	SKUT_Sinus[7] = SIN_LOW;
 end
 
 always@(posedge iClk) begin
 	S8K <= { S8K[0],  i8KHz };
-	S100H <= { S100H[0],  i100Hz };
+//	S100H <= { S100H[0],  i100Hz };
 end
 
 reg		[1:0]	LCCstate;
@@ -85,33 +81,6 @@ always@(posedge iClk) begin
 	end
 end
 
-/*Çàïðîñ íà ÁÓÑ*/
-always@(posedge iClk) begin
-if (~reset) begin
-	DDCBState <= 2'b0;
-	oDDCBReq <= 1'b0;
-	DDCBCntRQ <= 9'b0;
-end else begin
-case (DDCBState)
-	0: begin
-		if (S100H[1]) DDCBState <= 2;
-	end
-	1: begin
-		DDCBCntRQ <= 0;
-		if (~S100H[1]) DDCBState <= 0;
-	end
-	2: begin
-		DDCBCntRQ <= DDCBCntRQ + 1'b1;	
-		case (DDCBCntRQ)
-			509: oDDCBReq <= 0;
-			510: DDCBState <= 1;
-			default: oDDCBReq <= 1;
-		endcase
-	end
-endcase
-end
-end
-
 /*Îòäà÷à íà ÂÛÕÎÄ*/
 always@(posedge iClk)begin
 if (~reset) begin
@@ -119,7 +88,6 @@ if (~reset) begin
 	oAddr <= 7'b0;
 	oWrEn <= 1'b0;
 	o19ch <= 1'b0;
-	oDDCAddr <= 7'b0;
 	SKUTState <= 3'b0;
 	SKUTOutByte <= 4'b0;
 	SKUTCntChan <= 7'b0;
@@ -177,27 +145,6 @@ case (SKUTState)
 					o19ch <= 1'b0;
 				end
 			end
-// ÁÓÑ öèôðà 			
-/*			13: oData <= {iDDCS1[13:12], 6'b011100};
-			33:	oData <= {iDDCS1[15:14], 6'b011100};
-			3:	oData <= {iDDCS1[9:8], 6'b011100};
-			23:	oData <= {iDDCS1[11:10], 6'b011100};
-			11:	oData <= {iDDCS1[5:4], 6'b011100};
-			31:	oData <= {iDDCS1[7:6], 6'b011100};
-			8:	oData <= {iDDCS1[1:0], 6'b011100};
-			28: oData <= {iDDCS1[3:2], 6'b011100};
-			12: oData <= {iDDCS2[13:12], 6'b011100};
-			32: oData <= {iDDCS2[15:14], 6'b011100};
-			2:	oData <= {iDDCS2[9:8], 6'b011100};
-			22: oData <= {iDDCS2[11:10], 6'b011100};
-			1:	oData <= {iDDCS2[5:4], 6'b011100};
-			21: oData <= {iDDCS2[7:6], 6'b011100};
-			14: oData <= {iDDCS2[1:0], 6'b011100};
-			34: oData <= {iDDCS2[3:2], 6'b011100};
-//ÁÓÑ àíàëîãîâûé
-			4:	oData <= {iLKF1[3:2], 6'b011100};
-			24: oData <= {iLKF1[1:0], 6'b011100};
-*/			
 			default: oData <= 8'd0;
 		endcase
 
@@ -209,7 +156,7 @@ case (SKUTState)
 	end
 	
 	4: begin
-		case (cntRQ)
+		/*case (cntRQ)
 			1: 	begin
 				oDDCAddr <= DDCAddress;
 			end
@@ -218,7 +165,7 @@ case (SKUTState)
 			end
 			4: SKUTState <= 1;
 		endcase
-		cntRQ = cntRQ + 1'b1;
+		cntRQ = cntRQ + 1'b1;*/
 	end
 	
 

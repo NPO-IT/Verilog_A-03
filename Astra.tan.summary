@@ -2,20 +2,40 @@
 Timing Analyzer Summary
 --------------------------------------------------------------------------------------
 
+Type           : Worst-case tsu
+Slack          : N/A
+Required Time  : None
+Actual Time    : 12.600 ns
+From           : UART0_RX
+To             : UARTRX:lcc_rx|sync[0]
+From Clock     : --
+To Clock       : clk80
+Failed Paths   : 0
+
 Type           : Worst-case tco
 Slack          : N/A
 Required Time  : None
-Actual Time    : 22.800 ns
-From           : SKUT_buffer:skut_buf0|altdpram:altdpram_component|q[7]
-To             : DAC2_DB7
+Actual Time    : 21.800 ns
+From           : SKUT_buffer:skut_buf0|altdpram:altdpram_component|q[6]
+To             : DAC2_DB6
 From Clock     : clk80
 To Clock       : --
+Failed Paths   : 0
+
+Type           : Worst-case th
+Slack          : N/A
+Required Time  : None
+Actual Time    : -10.400 ns
+From           : UART0_RX
+To             : UARTRX:lcc_rx|sync[0]
+From Clock     : --
+To Clock       : clk80
 Failed Paths   : 0
 
 Type           : Clock Setup: 'clk80'
 Slack          : N/A
 Required Time  : None
-Actual Time    : 38.17 MHz ( period = 26.200 ns )
+Actual Time    : 37.88 MHz ( period = 26.400 ns )
 From           : globalReset:aClr|lpm_counter:count_rtl_0|alt_counter_f10ke:wysi_counter|counter_cell[0]
 To             : globalReset:aClr|lpm_counter:count_rtl_0|alt_counter_f10ke:wysi_counter|counter_cell[63]
 From Clock     : clk80
@@ -25,7 +45,7 @@ Failed Paths   : 0
 Type           : Clock Setup: 'clk100'
 Slack          : N/A
 Required Time  : None
-Actual Time    : 81.30 MHz ( period = 12.300 ns )
+Actual Time    : 81.97 MHz ( period = 12.200 ns )
 From           : UARTTXBIG:lcc_rq_uart|serialize[1]
 To             : UARTTXBIG:lcc_rq_uart|tx
 From Clock     : clk100

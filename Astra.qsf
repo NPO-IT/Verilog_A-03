@@ -103,3 +103,8 @@ set_location_assignment PIN_53 -to UART0_RX
 set_location_assignment PIN_48 -to UART0_TX
 set_location_assignment PIN_50 -to UART0_dRX
 set_location_assignment PIN_49 -to UART0_dTX
+set_location_assignment PIN_119 -to t119
+set_location_assignment PIN_120 -to t120
+set_location_assignment PIN_184 -to t184
+set_location_assignment PIN_186 -to t186
+set_global_assignment -name VERILOG_FILE fastExtract.v

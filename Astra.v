@@ -1,19 +1,17 @@
 module Astra (
 	input	clk80, clk100,						//80.64; 100.66
-	
-						//DAC outs
+	// Frame outs
 	output	DAC_MODE,
 	output	DAC1_CLK, DAC1_DB0, DAC1_DB1, DAC1_DB2, DAC1_DB3, DAC1_DB4, DAC1_DB5, DAC1_DB6, DAC1_DB7,
 	output	DAC2_CLK, DAC2_DB0, DAC2_DB1, DAC2_DB2, DAC2_DB3, DAC2_DB4, DAC2_DB5, DAC2_DB6, DAC2_DB7, 
-
-						// Frame bases
 	output	SKUT_MBR, SKUT_VI,
-
-						// UART inouts
+	// UART
 	input	UART0_RX,
 	output	UART0_TX,
 	output	UART0_dTX,
-	output	UART0_dRX
+	output	UART0_dRX,
+	// TEST
+	output t120, t119, t186, t184
 );
 //Common
 wire			reset;
@@ -30,6 +28,10 @@ wire			BUF_OSWCH;
 reg				BUF0_RDEN, BUF1_RDEN;
 wire	[7:0]	BUF0_DATA, BUF1_DATA;
 reg		[7:0]	DAC_OUT;
+wire	[7:0]	LCC_RQNUM;
+wire			LCC_RQSNL;
+wire	[5:0]	LCC_FDAT;
+wire			LCC_FVAL;
 
 // DAC outputs
 assign DAC_MODE = 0;
@@ -79,37 +81,38 @@ always@(*)begin
 	endcase
 end
 
+SKUT_former skut_frame( 
+	// common
+	.reset(reset), .iClk(clk80), .i8KHz(clk8k),
+	// buffer
+	.oData(BUF_IDATA), .oAddr(BUF_IADDR), .oWrEn(BUF_IWREN),
+	// for LCC
+	.oLCCnumber(LCC_RQNUM),
+	.oLCCrq(LCC_RQSNL),
+	.iLCC1_FDAT(LCC_FDAT),
+	.iLCC1_FVAL(LCC_FVAL)
+);
+toDAC dac_distributor( .reset(reset), .clk(clk80), .i640(clk640k), .skut40(skut_sync), .ADR(BUF_OADDR), .SEL(BUF_OSWCH) );
+SKUT_buffer skut_buf0 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF0_RDEN), .wraddress(BUF_IADDR), .wren(BUF0_WREN), .q(BUF0_DATA));
+SKUT_buffer skut_buf1 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF1_RDEN), .wraddress(BUF_IADDR), .wren(BUF1_WREN), .q(BUF1_DATA));
+
 //LCC requests
 wire	[9:0]	LCC_RQADR;
 wire	[7:0]	LCC_RQDAT;
 wire	[7:0]	LCC_RXDAT;
 wire			LCC_RXVAL;
-wire	[7:0]	LCC_RQNUM;
-wire			LCC_RQSNL;
-
-SKUT_former skut_frame( .reset(reset), .iClk(clk80), .i8KHz(clk8k),
-	//to memory
-	.oData(BUF_IDATA), .oAddr(BUF_IADDR), .oWrEn(BUF_IWREN),
-	// for LCC
-	.oLCCnumber(LCC_RQNUM),
-	.oLCCrq(LCC_RQSNL),
-	//for DDC
-	//.oDDCBReq, .oDDCAddr, //[6:0] //.i100Hz, 
-	.iDDCS1(0), //[15:0] 
-	.iDDCS2(0), //[15:0] 
-	.iLKF1(0) //[3:0]
-	//LCF
-	//.o19ch,
-);
-
-toDAC dac_distributor( .reset(reset), .clk(clk80), .i640(clk640k), .skut40(skut_sync), .ADR(BUF_OADDR), .SEL(BUF_OSWCH) );
-SKUT_buffer skut_buf0 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF0_RDEN), .wraddress(BUF_IADDR), .wren(BUF0_WREN), .q(BUF0_DATA));
-SKUT_buffer skut_buf1 ( .clock(clk80), .data(BUF_IDATA), .rdaddress(BUF_OADDR), .rden(BUF1_RDEN), .wraddress(BUF_IADDR), .wren(BUF1_WREN), .q(BUF1_DATA));
 
 LCCrq lcc_rq_rom ( .address(LCC_RQADR), .inclock(clk80), .outclock(clk80), .q(LCC_RQDAT) );
 UARTTXBIG lcc_rq_uart ( .reset(reset), .clk(clk4_8m), .RQ(LCC_RQSNL), .cycle(LCC_RQNUM), .data(LCC_RQDAT), .addr(LCC_RQADR), .tx(UART0_TX), .dirTX(UART0_dTX), .dirRX(UART0_dRX) );
 defparam lcc_rq_uart.BYTES = 3'd4;
 UARTRX lcc_rx ( .clk(clk80), .reset(reset), .RX(UART0_RX), .oData(LCC_RXDAT), .oValid(LCC_RXVAL) );
 defparam lcc_rx.DIVIDER = 17;
+
+fastExtract lcc_fast ( .clk80(clk80), .reset(reset), .iData(LCC_RXDAT), .iVal(LCC_RXVAL), .oData(LCC_FDAT), .oVal(LCC_FVAL) );
+
+assign t120 = LCC_RXVAL;
+//assign t119 = LCC_RXVAL;
+//assign t186 = LCC_RXVAL;
+//assign t184 = LCC_RXVAL;
 
 endmodule
